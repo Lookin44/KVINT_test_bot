@@ -32,8 +32,9 @@ def start(update: Update, context: CallbackContext) -> None:
     """Отправте /start для активации бота."""
     user = update.effective_user
     update.message.reply_markdown_v2(
-        f'Здравствуйте, {user.mention_markdown_v2()}\! '
-        f'Готовы заказать вкуснейшую пиццу? 😉'
+        f'Здравствуйте, {user.mention_markdown_v2()}\!\n'
+        f'Готовы заказать вкуснейшую пиццу? 😉\n'
+        f'Тогда поехали /order'
     )
 
 
@@ -67,7 +68,7 @@ def message_handler(update: Update, context: CallbackContext) -> None:
             keyboard = [
                 [
                     InlineKeyboardButton(
-                        "💵Наличкой", callback_data='наличкой'
+                        "💵Наличными", callback_data='наличными'
                     ),
                     InlineKeyboardButton(
                         "💳Онлайн", callback_data='онлайн'
@@ -81,7 +82,7 @@ def message_handler(update: Update, context: CallbackContext) -> None:
         else:
             update.message.reply_text('Два варианта: большую / маленькую.')
     elif bot.state == 'pay_method':
-        if query.data in ('наличкой', 'онлайн'):
+        if query.data in ('наличными', 'онлайн'):
             bot.set_pay_method(query.data)
             bot.next()
             keyboard = [
@@ -104,7 +105,7 @@ def message_handler(update: Update, context: CallbackContext) -> None:
             update.message.reply_text(
                 'Конечно есть много вариантов оплаты, '
                 'и первыми биткойнами покупали пиццу, '
-                'но сейчас мы принимает только наличкой или онлайн)'
+                'но сейчас мы принимает только наличными или онлайн.'
             )
     elif bot.state == 'confirm':
         if query.data == 'да':
@@ -117,7 +118,7 @@ def message_handler(update: Update, context: CallbackContext) -> None:
             bot.cancel()
             bot.end()
             query.edit_message_text(
-                'Оу!( Вам что-то не понравилось? Ваш заказ отменен. '
+                'Оу! 😔 Вам что-то не понравилось?\nВаш заказ отменен.\n'
                 'Давайте снова создадим заказ /order?'
             )
         else:
@@ -138,7 +139,7 @@ def cancel(update: Update, context: CallbackContext) -> None:
         update.message.reply_text('Заказ отменён')
     else:
         update.message.reply_text(
-            'Что бы что-то отменить, надо сначала заказать) '
+            'Что бы что-то отменить,\nнадо сначала заказать. 😏\n'
             'Давайте сделаем заказ /order?'
         )
 
