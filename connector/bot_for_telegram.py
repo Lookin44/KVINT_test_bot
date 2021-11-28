@@ -94,8 +94,8 @@ def message_handler(update: Update, context: CallbackContext) -> None:
             ]
             reply_markup = InlineKeyboardMarkup(keyboard)
             query.edit_message_text(
-                f"Вы будете {bot.pizza_size} пиццу, " 
-                f"оплата - {bot.pay_method}?",
+                f"Вы будете {bot.get_pizza_size()} пиццу, " 
+                f"оплата - {bot.get_pay_method()}?",
                 reply_markup=reply_markup,
             )
         else:
@@ -131,8 +131,8 @@ def cancel(update: Update, context: CallbackContext) -> None:
     if bot.state != "waiting":
         bot.cancel()
         bot.end()
-        bot.set_pizza_size(None)
-        bot.set_pay_method(None)
+        bot.set_pizza_size_none()
+        bot.set_pay_method_none()
         update.message.reply_text("Заказ отменён")
     else:
         update.message.reply_text(
